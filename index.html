@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Rabieee — Videographer &amp; Video Editor</title>
+  <script>
+    document.documentElement.className += ' js';
+    (function () {
+      var t; try { t = localStorage.getItem('theme') } catch (e) { }
+      document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light')
+    })();
+  </script>
+  <style>
+    :root {
+      /* 60-30-10 THEME: off-white (60%), black (30%), red accent (10%). Change --ac / --ac2 for the red. */
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --tx: #0a0a0a;
+      --mu: #5c5c5c;
+      --bd: #dedede;
+      --ac: #d41920;
+      --ac2: #ff4d4d;
+      --on: #ffffff;
+      --star: #f2a900;
+      --shine: #ff9a9a;
+      --glow: rgba(212, 25, 32, .10);
+      --neon: rgba(212, 25, 32, .35);
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #070707;
+      --card: #131313;
+      --tx: #f5f5f5;
+      --mu: #a0a0a0;
+      --bd: #2a2a2a;
+      --ac: #e11d24;
+      --ac2: #ff5a5a;
+      --shine: #ffd0d0;
+      --glow: rgba(225, 29, 36, .16);
+      --neon: rgba(225, 29, 36, .42)
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--tx);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+      transition: background-color .4s, color .4s
+    }
+
+    /* animated gradient background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -25%;
+      z-index: -2;
+      pointer-events: none;
+      background: radial-gradient(35% 35% at 18% 22%, var(--glow), transparent 70%), radial-gradient(30% 30% at 82% 30%, var(--glow), transparent 70%), radial-gradient(40% 40% at 55% 85%, var(--glow), transparent 70%);
+      animation: drift 16s ease-in-out infinite alternate
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .5;
+      background-image: linear-gradient(var(--bd) 1px, transparent 1px), linear-gradient(90deg, var(--bd) 1px, transparent 1px);
+      background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(70% 60% at 50% 30%, #000, transparent);
+      mask-image: radial-gradient(70% 60% at 50% 30%, #000, transparent)
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translate3d(-3%, -2%, 0) scale(1)
+      }
+
+      100% {
+        transform: translate3d(4%, 3%, 0) scale(1.15)
+      }
+    }
+
+    #pb {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 100%;
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      background: linear-gradient(90deg, var(--ac), var(--ac2));
+      box-shadow: 0 0 12px var(--ac);
+      z-index: 50
+    }
+
+    .w {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px
+    }
+
+    section {
+      padding: 56px 0
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 9vw, 4.2rem);
+      line-height: 1.05;
+      margin: .2em 0
+    }
+
+    h2 {
+      font-size: 1.7rem;
+      margin: 0 0 6px
+    }
+
+    h3 {
+      font-size: 1rem;
+      margin: 12px 0 0
+    }
+
+    .g {
+      background: linear-gradient(90deg, var(--ac), var(--ac2), var(--shine), var(--ac));
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shine 6s linear infinite
+    }
+
+    @keyframes shine {
+      to {
+        background-position: -250% 0
+      }
+    }
+
+    .mu {
+      color: var(--mu)
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border: 1px solid var(--bd);
+      background: var(--card);
+      border-radius: 99px;
+      font-size: .85rem;
+      color: var(--mu)
+    }
+
+    .tag i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ac);
+      box-shadow: 0 0 0 0 var(--neon);
+      animation: pulse 1.8s infinite
+    }
+
+    @keyframes pulse {
+      70% {
+        box-shadow: 0 0 0 9px transparent
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 transparent
+      }
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, var(--ac), var(--ac2));
+      color: var(--on);
+      text-decoration: none;
+      font-weight: 700;
+      border: 0;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 0 22px -4px var(--neon);
+      transition: transform .2s, box-shadow .2s
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 34px -2px var(--neon)
+    }
+
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -70%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .55), transparent);
+      transform: skewX(-20deg);
+      animation: sweep 3.2s ease-in-out infinite
+    }
+
+    @keyframes sweep {
+
+      0%,
+      60% {
+        left: -70%
+      }
+
+      100% {
+        left: 130%
+      }
+    }
+
+    .btn.o {
+      background: none;
+      border: 1px solid var(--ac);
+      color: var(--tx);
+      box-shadow: none
+    }
+
+    .btn.o:hover {
+      background: var(--glow);
+      box-shadow: 0 0 26px -4px var(--neon)
+    }
+
+    .btn.o::after {
+      display: none
+    }
+
+    .stats {
+      display: flex;
+      gap: 28px;
+      margin-top: 28px;
+      flex-wrap: wrap
+    }
+
+    .stats b {
+      display: block;
+      font-size: 1.8rem
+    }
+
+    /* marquee */
+    .mq {
+      overflow: hidden;
+      border-block: 0;
+      background: #0a0a0a;
+      padding: 14px 0;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)
+    }
+
+    .mq div {
+      display: flex;
+      gap: 44px;
+      width: max-content;
+      animation: scroll 22s linear infinite;
+      font-weight: 700;
+      letter-spacing: .14em;
+      font-size: .82rem;
+      text-transform: uppercase;
+      color: #f1f1f1;
+      white-space: nowrap
+    }
+
+    .mq span::before {
+      content: "✦";
+      color: var(--ac);
+      margin-right: 44px;
+      text-shadow: 0 0 10px var(--ac)
+    }
+
+    @keyframes scroll {
+      to {
+        transform: translateX(-50%)
+      }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+      gap: 16px;
+      margin-top: 22px
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--bd);
+      border-radius: 16px;
+      padding: 18px;
+      transition: transform .3s, border-color .3s, box-shadow .3s, background-color .4s
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--ac);
+      box-shadow: 0 0 0 1px var(--ac), 0 18px 50px -14px var(--neon)
+    }
+
+    .vid {
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center
+    }
+
+    .vid.p {
+      aspect-ratio: 9/16
+    }
+
+    .vid video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000
+    }
+
+    .sub {
+      font-size: 1rem;
+      color: var(--mu);
+      margin: 28px 0 0;
+      font-weight: 600
+    }
+
+    .g16 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+      gap: 16px;
+      margin-top: 12px
+    }
+
+    .g9 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 300px));
+      gap: 16px;
+      margin-top: 12px
+    }
+
+    .pg {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 22px
+    }
+
+    .pg a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border: 1px solid var(--bd);
+      background: var(--card);
+      border-radius: 14px;
+      color: var(--tx);
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform .25s, border-color .25s, box-shadow .25s
+    }
+
+    .pg a:hover {
+      transform: translateY(-4px);
+      border-color: var(--ac);
+      box-shadow: 0 10px 30px -10px var(--neon)
+    }
+
+    .q {
+      font-size: 2rem;
+      color: var(--ac);
+      line-height: 1;
+      text-shadow: 0 0 14px var(--neon)
+    }
+
+    .st {
+      color: var(--star);
+      letter-spacing: 2px
+    }
+
+    .who {
+      margin-top: 12px;
+      font-weight: 600
+    }
+
+    .ct a {
+      color: var(--tx);
+      text-decoration: none
+    }
+
+    .ct a:hover {
+      color: var(--ac)
+    }
+
+    footer {
+      padding: 28px 0;
+      text-align: center;
+      color: var(--mu);
+      font-size: .85rem;
+      border-top: 1px solid var(--bd)
+    }
+
+    img,
+    video,
+    iframe {
+      max-width: 100%
+    }
+
+    .tt {
+      position: fixed;
+      top: calc(env(safe-area-inset-top, 0px) + 14px);
+      right: 14px;
+      z-index: 60;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid var(--bd);
+      background: var(--card);
+      color: var(--tx);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 24px -8px var(--neon);
+      transition: transform .3s, border-color .3s, box-shadow .3s, background-color .4s
+    }
+
+    .tt:hover {
+      transform: rotate(18deg) scale(1.08);
+      border-color: var(--ac);
+      box-shadow: 0 8px 30px -6px var(--neon)
+    }
+
+    .tt svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .tt .sun {
+      display: none
+    }
+
+    :root[data-theme="dark"] .tt .sun {
+      display: block
+    }
+
+    :root[data-theme="dark"] .tt .moon {
+      display: none
+    }
+
+    .tt.spin svg {
+      animation: spin .5s ease
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(-90deg) scale(.4);
+        opacity: 0
+      }
+
+      to {
+        transform: none;
+        opacity: 1
+      }
+    }
+
+    .vid.e {
+      border: 2px dashed var(--bd);
+      background: transparent;
+      color: var(--mu);
+      font-size: .9rem;
+      padding: 10px
+    }
+
+    .who small {
+      display: block;
+      color: var(--mu);
+      font-weight: 500;
+      margin-top: 2px
+    }
+
+    /* responsive */
+    @media (max-width:900px) {
+      .w {
+        padding: 0 18px
+      }
+
+      section {
+        padding: 48px 0
+      }
+    }
+
+    @media (max-width:640px) {
+      .w {
+        padding: 0 16px
+      }
+
+      section {
+        padding: 38px 0
+      }
+
+      h2 {
+        font-size: 1.45rem
+      }
+
+      .card {
+        padding: 14px
+      }
+
+      .stats {
+        gap: 22px;
+        margin-top: 22px
+      }
+
+      .stats b {
+        font-size: 1.6rem
+      }
+
+      .btn {
+        padding: 11px 18px;
+        font-size: .95rem
+      }
+
+      .tag {
+        font-size: .78rem;
+        padding: 5px 12px
+      }
+
+      .g16 {
+        grid-template-columns: 1fr
+      }
+
+      .g9 {
+        grid-template-columns: minmax(0, 320px);
+        justify-content: center
+      }
+
+      .pg a {
+        width: 100%
+      }
+
+      .mq div {
+        gap: 30px;
+        animation-duration: 16s
+      }
+
+      .mq span::before {
+        margin-right: 30px
+      }
+
+      body::after {
+        background-size: 40px 40px
+      }
+    }
+
+    @media (max-width:360px) {
+      h1 {
+        font-size: 2.1rem
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center
+      }
+    }
+
+    /* desktop/tablet: all vertical reels in one line */
+    @media (min-width:641px) {
+      .g9 {
+        grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr));
+        max-width: calc(var(--n, 3)*296px + (var(--n, 3) - 1)*16px)
+      }
+    }
+
+    /* scroll reveal */
+    .js .rv {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .8s ease, transform .8s ease
+    }
+
+    .js .rv.in {
+      opacity: 1;
+      transform: none
+    }
+
+    .fl {
+      animation: float 5s ease-in-out infinite
+    }
+
+    @keyframes float {
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important
+      }
+
+      .js .rv {
+        opacity: 1;
+        transform: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="pb"></div>
+  <button class="tt" id="tt" type="button" aria-label="Switch to dark mode" title="Light / Dark mode">
+    <svg class="moon" viewBox="0 0 24 24">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+    </svg>
+    <svg class="sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </svg>
+  </button>
+  <div class="w">
+    <section>
+      <span class="tag fl"><i></i>🎬 Videographer &amp; Editor · Available for work</span>
+      <h1 class="rv">Hi, I'm <span class="g">Rabieee</span>.<br>I turn raw footage into stories.</h1>
+      <p class="mu rv" style="max-width:520px">Video editor with 4 years of experience in reels, YouTube videos, promos
+        and more. I also shoot and edit — from filming on location to the final cut, with crisp cuts, clean color and
+        sound that keeps people watching.</p>
+      <div class="rv" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+        <a class="btn" href="#work">See my work</a>
+        <a class="btn o" href="#contact">Hire me</a>
+      </div>
+      <div class="stats rv">
+        <div><b class="g" data-n="4" data-s="+">0</b><span class="mu">Years experience</span></div>
+        <div><b class="g" data-n="100" data-s="+">0</b><span class="mu">Reels edited</span></div>
+        <div><b class="g" data-n="1" data-s="M+">0</b><span class="mu">Views generated</span></div>
+        <div><b class="g" data-n="5" data-s="">0</b><span class="mu">Featured edits</span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="mq" aria-hidden="true">
+    <div>
+      <span>Shooting</span><span>Editing</span><span>Reels</span><span>YouTube
+        Videos</span><span>Promos</span><span>Color Grading</span><span>Sound Design</span><span>Motion Cuts</span>
+      <span>Shooting</span><span>Editing</span><span>Reels</span><span>YouTube
+        Videos</span><span>Promos</span><span>Color Grading</span><span>Sound Design</span><span>Motion Cuts</span>
+    </div>
+  </div>
+
+  <div class="w">
+    <section id="work">
+      <h2 class="rv">Featured <span class="g">Work</span></h2>
+      <p class="sub rv">Landscape · 16:9</p>
+      <div class="g16" id="vids16"></div>
+      <p class="sub rv">Vertical Reels · 9:16</p>
+      <div class="g9" id="vids9"></div>
+    </section>
+
+    <section>
+      <h2 class="rv">Pages I <span class="g">edit for</span></h2>
+      <p class="mu rv">Currently editing reels for these Instagram pages.</p>
+      <div class="pg rv">
+        <a href="https://instagram.com/unique_football_club" target="_blank" rel="noopener">⚽ @unique_football_club</a>
+        <a href="https://instagram.com/apnelooog_" target="_blank" rel="noopener">📸 @apnelooog_</a>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="rv">Client <span class="g">Reviews</span></h2>
+      <div class="grid">
+        <div class="card rv">
+          <div class="q">“</div>
+          <div class="st">★★★★★</div>
+          <p>Rabie turned my rough footage into a reel that doubled my views. Fast, creative and easy to work with.</p>
+          <div class="who">Abdul hannan<small>Content Creator · Frameline Studios</small></div>
+        </div>
+        <div class="card rv" style="transition-delay:.12s">
+          <div class="q">“</div>
+          <div class="st">★★★★★</div>
+          <p>Great sense of pacing and sound. Delivered before the deadline and nailed every revision.</p>
+          <div class="who">Arman<small>Content Creator · Pixel Pulse Media</small></div>
+        </div>
+        <div class="card rv" style="transition-delay:.24s">
+          <div class="q">“</div>
+          <div class="st">★★★★★</div>
+          <p>Professional edits with clean transitions and color. I'll keep working with Rabie on every project.</p>
+          <div class="who">Sifan<small>Content Creator · Northwave Creative</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="ct">
+      <h2 class="rv">Let's <span class="g">work together</span></h2>
+      <p class="mu rv">Got footage that needs a story? Reach out.</p>
+      <div class="grid">
+        <div class="card rv">📧 <b>Email</b><br><a href="mailto:rabieabdul15@gmail.com">rabieabdul15@gmail.com</a></div>
+        <div class="card rv" style="transition-delay:.12s">📸 <b>Instagram</b><br><a
+            href="https://instagram.com/rabieeeeee_" target="_blank" rel="noopener">@rabieeeeee_</a></div>
+      </div>
+      <p class="rv" style="margin-top:22px"><a class="btn"
+          href="mailto:rabieabdul15@gmail.com?subject=Video%20editing%20project">Send an email</a></p>
+    </section>
+  </div>
+  <footer>© <span id="y"></span> Rabieee · Videographer &amp; Editor</footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Put your .mp4 files in a folder named "videos" next to this index.html
+    // File names must match exactly (including capital letters and spaces).
+    var VIDEOS = [
+      { title: 'Jersey Reveal', src: 'videos/EDIT 2.mp4', ratio: '16:9' },
+      { title: 'Random Vlog', src: 'videos/EDIT 3.mp4', ratio: '16:9' },
+      { title: 'Footballer Edit', src: 'videos/EDIT 1.mp4', ratio: '9:16' },
+      { title: 'Football Edit', src: 'videos/EDIT 4.mp4', ratio: '9:16' },
+      { title: 'Football Edit', src: 'videos/EDIT 5.mp4', ratio: '9:16' }
+    ];
+    function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] }) }
+    // the page tries these file-name variants automatically (EDIT 2.mp4, edit2.mp4, Edit 2.mp4 ...)
+    function variants(src) {
+      var m = src.match(/^(.*\/)?(.*?)(\d+)\.mp4$/i), out = [src];
+      if (m) {
+        var dir = m[1] || '', n = m[3];
+        ['EDIT ' + n, 'edit ' + n, 'Edit ' + n, 'EDIT' + n, 'edit' + n, 'Edit' + n, 'EDIT_' + n, 'edit_' + n].forEach(function (nm) {
+          ['.mp4', '.MP4'].forEach(function (ext) { var u = dir + nm + ext; if (out.indexOf(u) < 0) out.push(u) });
+        });
+      }
+      return out;
+    }
+    VIDEOS.forEach(function (v, i) {
+      var vertical = v.ratio === '9:16';
+      var d = document.createElement('div'); d.className = 'card rv'; d.style.transitionDelay = (i % 2 * 0.12) + 's';
+      var srcs = variants(v.src).map(function (u) { return '<source src="' + encodeURI(u) + '" type="video/mp4">' }).join('');
+      d.innerHTML = '<div class="vid' + (vertical ? ' p' : '') + '"><video controls playsinline preload="metadata">' + srcs + '</video></div><h3>' + esc(v.title) + '</h3>';
+      var vid = d.querySelector('video'), box = vid.parentNode;
+      function fail(msg) { box.classList.add('e'); box.textContent = msg }
+      // none of the file names was found
+      var last = vid.querySelector('source:last-child');
+      last.addEventListener('error', function () { fail('Can\'t find ' + v.src + ' — check the file name and the videos folder.') });
+      // file found but the browser can\'t decode it (e.g. HEVC / H.265)
+      vid.addEventListener('error', function () { fail('This video was found but can\'t play in the browser. Re-export it as MP4 (H.264 video + AAC audio).') });
+      document.getElementById(vertical ? 'vids9' : 'vids16').appendChild(d);
+    });
+
+    document.getElementById('vids9').style.setProperty('--n', Math.max(1, VIDEOS.filter(function (v) { return v.ratio === '9:16' }).length));
+
+    // scroll reveal + count-up
+    function countUp(el) {
+      var n = +el.dataset.n, s = el.dataset.s || '', t0 = null;
+      (function step(t) { t0 = t0 || t; var p = Math.min((t - t0) / 1200, 1); el.textContent = Math.round(n * (1 - Math.pow(1 - p, 3))) + (p === 1 ? s : ''); if (p < 1) requestAnimationFrame(step) })(performance.now());
+    }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); e.target.querySelectorAll('[data-n]').forEach(countUp); io.unobserve(e.target) }
+      })
+    }, { threshold: .12 });
+    document.querySelectorAll('.rv').forEach(function (el) { io.observe(el) });
+
+    // light / dark switch
+    var tt = document.getElementById('tt'), root = document.documentElement;
+    function labelT() { tt.setAttribute('aria-label', root.getAttribute('data-theme') === 'dark' ? 'Switch to light mode' : 'Switch to dark mode') }
+    labelT();
+    tt.addEventListener('click', function () {
+      var t = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', t);
+      try { localStorage.setItem('theme', t) } catch (e) { }
+      tt.classList.remove('spin'); void tt.offsetWidth; tt.classList.add('spin'); labelT();
+    });
+
+    // scroll progress bar
+    var pb = document.getElementById('pb');
+    addEventListener('scroll', function () { var h = document.documentElement; pb.style.transform = 'scaleX(' + (h.scrollTop / ((h.scrollHeight - h.clientHeight) || 1)) + ')' }, { passive: true });
+  </script>
+</body>
+
+</html>
